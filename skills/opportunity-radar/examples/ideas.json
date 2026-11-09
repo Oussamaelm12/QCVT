@@ -1,0 +1,24 @@
+{
+  "ideas": [
+    {
+      "name": "Example: focused web calculator (unvalidated)",
+      "distribution_channel": "Long-tail SEO (hypothesis)",
+      "scores": {
+        "pain": 3,
+        "distribution": 3,
+        "monetization": 2,
+        "competition_gap": 2,
+        "feasibility": 5,
+        "retention": 1,
+        "risk": 4
+      },
+      "evidence": [],
+      "test": {
+        "hypothesis": "People search for this specific calculation and want a dedicated tool",
+        "method": "Manual SERP inspection and publish a simple landing page",
+        "success_metric": "At least 20 qualified organic visits in a defined 30-day window",
+        "max_cost_eur": 0
+      }
+    }
+  ]
+}
