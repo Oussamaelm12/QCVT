@@ -35,3 +35,18 @@ All local Python scripts use the standard library only. The pipeline accesses th
 - A single platform cannot prove a viable opportunity. Source availability and coverage are not guaranteed.
 - The score is provisional and its evidence sufficiency gate is not proof of product-market fit.
 - GitHub Actions may require repository settings/permissions; inspect checks after push.
+
+## v0.5 — second independent source and evidence fusion
+
+`scripts/hackernews.py` uses the public Hacker News Algolia API, read-only and without a token, to retrieve dated discussion links, titles, comments and points. These are discovery leads, **not verified user pain**.
+
+`scripts/evidence.py` combines exported Apple and HN JSON files, deduplicates stable IDs, and preserves source URLs. It explicitly sets `validation_ready=false`: two source types alone do not validate a market.
+
+```bash
+python3 skills/opportunity-radar/scripts/hackernews.py "budget planner" --hits 30 --output research/hn-budget.json
+python3 skills/opportunity-radar/scripts/pipeline.py --query "budget planner" --query "expense tracker" --country fr --output research/apps-budget.json
+python3 skills/opportunity-radar/scripts/evidence.py research/apps-budget.json research/hn-budget.json --output research/budget-evidence.json
+python3 -m unittest discover -s skills/opportunity-radar/tests -v
+```
+
+No live API requests or CI checks were run as part of this commit. GitHub workflow runs associated with the latest commit were not returned when checked. Inspect GitHub Actions status before relying on these modules. Human evidence review and real demand validation remain required.
