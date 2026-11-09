@@ -1,0 +1,26 @@
+name: Opportunity Radar checks
+on:
+  pull_request:
+    paths:
+      - 'skills/opportunity-radar/**'
+      - '.github/workflows/opportunity-radar.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile Python files
+        run: python -m compileall -q skills/opportunity-radar/scripts skills/opportunity-radar/tests
+      - name: Run offline unit tests
+        run: python -m unittest discover -s skills/opportunity-radar/tests -v
+      - name: Validate example scoring
+        run: python skills/opportunity-radar/scripts/score.py skills/opportunity-radar/examples/ideas.json
+      - name: Validate financial model
+        run: python skills/opportunity-radar/scripts/economics.py --price 20 --conversion 0.02
