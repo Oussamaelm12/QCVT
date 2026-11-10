@@ -20,3 +20,6 @@ Source register (URL, **date of original**, access date, author/publisher, geogr
 **Never** say a URL is verified unless inspected; do not pretend multi-domain content is independent.
 Create structured `sources`, `findings`, `competitors` fields described in ../../VENTURE-STUDIO.md.
 No expenses, scraping against terms, account changes or outreach without permission.
+
+## Mandatory innovation groundwork
+Run benchmark on at least three direct competitors or substitutes with matched attributes (official pricing, core jobs, onboarding, integrations, complaints, support and constraints), marking unavailable data UNKNOWN. Capture actual source links and review status. Use JTBD and Design Thinking **empathize/define** to establish the customer's desired progress and observable struggle; do not simulate interviews as real. Deliver `innovation_engine.py` source, competitor and JTBD records for Strategy Lab.
