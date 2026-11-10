@@ -68,6 +68,7 @@ def evaluate(idea):
         warnings.append("missing organic distribution channel")
     if not idea.get("test"):
         warnings.append("missing falsifiable experiment")
+    ready = sufficient and bool(idea.get("distribution_channel")) and bool(idea.get("test"))
     return {
         "name": idea.get("name", "Unnamed"),
         "score_out_of_100_provisional": round(provisional, 1),
