@@ -31,3 +31,24 @@ Google Trends/SerpApi, Reddit, paid app analytics, SEO keyword volumes and third
 
 ## Safety
 Read-only fixed public API endpoints, input validation, bounded responses, no secrets in repo, no automatic third-party skill installation, no scheduled recurring requests, no costs beyond GitHub Actions quota and public endpoints subject to provider terms. Review the privacy implications of saving user-generated comments and avoid storing personal identifiers.
+
+## v0.7 — optional Reddit and Google Trends connectors
+
+Two adapters are now included in `scripts/integrations.py` and orchestrated by `scripts/enrich.py`:
+
+- Reddit: official OAuth API, requiring `REDDIT_ACCESS_TOKEN` and a descriptive `REDDIT_USER_AGENT`. Neither is included or obtained automatically. Public posts are discovery leads only.
+- Google Trends: SerpApi, requiring `SERPAPI_KEY` and **explicit** `--allow-paid-trends`. SerpApi can consume billable credits. The output includes relative interest indices, **not** keyword volume. Do not enable until the user approves a spending/credit cap.
+
+Optional enrichment of a previously generated dossier:
+
+```bash
+# Only after connecting a compliant Reddit OAuth token
+python3 skills/opportunity-radar/scripts/enrich.py research/first-scan.json \
+  --reddit --output research/reddit.json
+
+# Only after explicit approval for SerpApi credits
+python3 skills/opportunity-radar/scripts/enrich.py research/first-scan.json \
+  --trends --allow-paid-trends --output research/trends.json
+```
+
+**Important:** The above external connectors are implemented but not yet live-tested against authenticated provider accounts. External GitHub skill repositories listed in `SKILL.md` remain reviewed references, not installed executables. No claim of being the world's highest-performing agent is justified without independent benchmark comparisons, representative datasets, and repeatable metrics. For safe operation, credentials belong in a secret manager, not in source code or artifacts.
