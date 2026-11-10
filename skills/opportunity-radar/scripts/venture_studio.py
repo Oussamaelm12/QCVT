@@ -220,7 +220,23 @@ def run(input_path, output_dir):
     state=assess(data)
     output_dir=Path(output_dir)
     output_dir.mkdir(parents=True,exist_ok=True)
-    for filename,content in render(data,state).items():
+    artifacts=render(data,state)
+    # Preserve manually entered tracking events and phase states across regeneration.
+    progress_path=output_dir/"PROGRESS.json"
+    if progress_path.exists():
+        previous=json.loads(progress_path.read_text(encoding="utf-8"))
+        if previous.get("subject") != clean(data["subject"],150):
+            raise ValueError("existing progress belongs to another subject")
+        current=json.loads(artifacts["PROGRESS.json"])
+        current["events"]=previous.get("events",[])
+        recorded={p.get("id"):p.get("status") for p in previous.get("phases",[])}
+        for phase in current["phases"]:
+            if phase["id"] in recorded:
+                phase["status"]=recorded[phase["id"]]
+        for key in ("updated_at","last_reported_step"):
+            if key in previous: current[key]=previous[key]
+        artifacts["PROGRESS.json"]=json.dumps(current,indent=2,ensure_ascii=False)+"\n"
+    for filename,content in artifacts.items():
         (output_dir/filename).write_text(content,encoding="utf-8")
     return state
 
