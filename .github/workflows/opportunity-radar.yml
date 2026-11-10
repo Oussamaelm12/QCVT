@@ -24,3 +24,28 @@ jobs:
         run: python skills/opportunity-radar/scripts/score.py skills/opportunity-radar/examples/ideas.json
       - name: Validate financial model
         run: python skills/opportunity-radar/scripts/economics.py --price 20 --conversion 0.02
+
+  live-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    continue-on-error: true
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read-only public API smoke test
+        run: |
+          python skills/opportunity-radar/scripts/discover.py \
+            --query "budget planner" --country fr --app-limit 10 --hn-limit 10 \
+            --reviews 1 --output research/live-smoke.json
+      - name: Upload evidence dossier
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-live-smoke
+          path: research/live-smoke.json
+          if-no-files-found: ignore
+          retention-days: 7
