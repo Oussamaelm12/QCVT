@@ -17,3 +17,6 @@ Input: Evidence Lab dossier for a **selected** market topic. No memory/profile/p
 ## Agent handoff
 For each concept create `id`, `name`, `target_user`, `finding_ids`, `differentiation_hypothesis`, `smallest_test`, `success_criterion`. Cite the exact supporting findings. Explain assumptions and dissenting evidence. An unverified concept is **hypothesis**.
 No automatic publishing, advertising, paid calls or coding deployment.
+
+## Method router and evidence traceability
+Use **C-K** first for genuinely open concept spaces: label C nodes as hypotheses, K nodes as knowledge gaps and make explicit which research would convert a gap to tested knowledge. Use **TRIZ** only when an actual trade-off can be stated. Use **SCAMPER** for structured variations, and **Blue Ocean ERRC** (eliminate, reduce, raise, create) to compare meaningful value factors with benchmarked alternatives. Apply Design Thinking ideation/prototyping here; route user testing to Validation. Do not run every method indiscriminately. Generate `INNOVATION_DOSSIER.md` and `INNOVATION_ASSESSMENT.json` through `innovation_engine.py` using submitted evidence-linked records. Challenge every concept with customer value, feasibility, copyability, costs and measurable buying intent.
