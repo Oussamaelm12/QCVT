@@ -111,3 +111,39 @@ Suggested (not an automated background promise):
 - **After**: pilot launch, conversion and real revenue review.
 
 At weekly review, present actual source counts, unresolved critical claims, experiments, costs and real cash receipts (if any). An empty or unverified evidence field is `UNKNOWN`, never zero.
+
+
+## Innovation Engine v0 — benchmark + Design Thinking / JTBD + C-K + TRIZ / Blue Ocean
+
+Implemented in `scripts/innovation_engine.py` and optionally called by `venture_studio.py --innovation-input`. It is a **structured, deterministic evidence worksheet**, not an autonomous creative LLM or an automatic web fact checker.
+
+**Routing:** benchmark and JTBD at Evidence Lab; Design Thinking empathize/define at Evidence Lab, ideate/prototype at Strategy Lab, test at Validation; C-K, TRIZ, SCAMPER and Blue Ocean at Strategy Lab; Lean Startup during customer validation; AARRR only after approved launch.
+
+**Research input contract** (separate JSON from `selection.json`, with matching `subject`):
+```json
+{
+  "subject": "SELECTED SUBJECT",
+  "sources": [],
+  "findings": [],
+  "competitors": [],
+  "jtbd": [],
+  "ck_nodes": [],
+  "contradictions": [],
+  "blue_ocean_factors": [],
+  "concepts": [],
+  "tests": []
+}
+```
+Source rows: `id,url,review_status`. Finding rows: `id,statement,source_ids`. Competitor rows: `id,name,attributes,source_ids`. JTBD rows: `statement,finding_ids`. C-K nodes: `space` (`C` concept hypothesis / `K` knowledge gap), `statement,parent_id,finding_ids`. Concepts: `id,name,finding_ids`. Tests: `concept_id,target_customer,test_method,success_threshold,stop_rule,duration,cost_ceiling`. All references must point to recorded IDs.
+
+```bash
+python3 skills/opportunity-radar/scripts/venture_studio.py \\
+  --input /private/work/selection.json \\
+  --innovation-input /private/work/innovation.json \\
+  --output-dir /private/work/venture-dossier
+```
+
+Additional outputs: `INNOVATION_DOSSIER.md` and `INNOVATION_ASSESSMENT.json`. The benchmark gate requires **three named alternatives** with at least one self-reported manually checked source each. This is a minimal completeness gate, NOT an audit of their real prices/features or independent evidence. C-K nodes are never presented as established discoveries. Lean test readiness requires a target, method, preregistered threshold, stop rule, duration and cost ceiling; real outcomes remain UNKNOWN.
+
+**Before implementing automatic idea synthesis:** use an explicit model/tool and evaluation set; require claim-level citations, multiple alternative concepts, negative cases, testable differentiation and actual cost measurements. No benchmark scores or innovative advantage can be claimed from a prompt alone.
+
