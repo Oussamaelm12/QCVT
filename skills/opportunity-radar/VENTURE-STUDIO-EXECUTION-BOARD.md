@@ -42,3 +42,18 @@ The earliest economically meaningful deliverable is **not** an attractive AI fea
 
 ## Current limitations
 No automated deep web research, LLM-driven idea synthesis, customer outreach, real billing, deployment, production metrics or continuous GitHub issue sync is integrated yet. All external frameworks are evaluated references, NOT installed tools.
+
+## Innovation-methods implementation — added 2026-11-10
+| ID | Delivery | State | Proof / caveat |
+|---|---|---|---|
+| IN-01 | Stage-specific methodology routing | DONE (draft) | `innovation_engine.py` catalog: benchmark, JTBD, Design Thinking, C-K, TRIZ, SCAMPER, Blue Ocean, Lean Startup, AARRR |
+| IN-02 | Structured benchmark matrix | DONE (offline worksheet) | Three sourced alternatives minimum; no invented prices or comparative ranking |
+| IN-03 | JTBD problem statements | DONE (offline worksheet) | Finding IDs required; not actual user interviews |
+| IN-04 | C-K concept / knowledge map | DONE (offline worksheet) | C remains hypothesis; K remains knowledge-to-verify |
+| IN-05 | TRIZ contradictions and Blue Ocean ERRC | DONE (data slots) | No automated inventive problem-solving claimed |
+| IN-06 | Lean Startup experiment readiness | DONE (offline checks) | Target, method, threshold, stop rule, duration, cost ceiling required |
+| IN-07 | Evidence-linked autonomous innovation generator | NOT IMPLEMENTED | Requires approved LLM/tooling and benchmark against real cases |
+| IN-08 | Verified automatic competitor data collection | NOT IMPLEMENTED | Requires lawful sources, timestamps and independent validation |
+| IN-09 | Real customer experiment and payment tracking | NOT IMPLEMENTED | Requires actual test and explicit approval |
+
+**Execution order:** IN-08 and VS-11/12 → verified benchmark/JTBD → IN-07 (creative multi-method generation and red team) → IN-06 (actual experiment design) → measured tests → MVP.
