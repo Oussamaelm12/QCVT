@@ -25,7 +25,8 @@ def evaluate(idea):
     evidence = idea.get("evidence", [])
     accepted = []
     warnings = []
-    domains = set()\n    unique_observed = set()
+    domains = set()
+    unique_observed = set()
     for i, item in enumerate(evidence):
         url = item.get("url", "")
         host = urlparse(url).hostname
