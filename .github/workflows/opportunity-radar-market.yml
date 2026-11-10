@@ -32,9 +32,10 @@ jobs:
         env:
           COUNTRY: ${{ inputs.country || 'fr' }}
           MAX_QUERIES: ${{ inputs.max_queries || '24' }}
+          RUN_NUMBER: ${{ github.run_number }}
         run: |
           python skills/opportunity-radar/scripts/market_radar.py \
-            --country "$COUNTRY" --max-queries "$MAX_QUERIES" \
+            --country "$COUNTRY" --max-queries "$MAX_QUERIES" --rotation "$RUN_NUMBER" \
             --output research/weekly-market-radar.json
       - name: Upload weekly intelligence
         if: ${{ always() && github.event.repository.private }}
