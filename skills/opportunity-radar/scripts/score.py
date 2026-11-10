@@ -25,13 +25,13 @@ def evaluate(idea):
     evidence = idea.get("evidence", [])
     accepted = []
     warnings = []
-    domains = set()
+    domains = set()\n    unique_observed = set()
     for i, item in enumerate(evidence):
         url = item.get("url", "")
         host = urlparse(url).hostname
         typ = item.get("type")
         captured = item.get("captured_at")
-        if typ not in VALID_TYPES or not host or not captured:
+        if typ not in VALID_TYPES or not host or urlparse(url).scheme != "https" or not captured or not item.get("claim") or not item.get("geography"):
             warnings.append(f"evidence[{i}]: invalid type, URL or date")
             continue
         try:
@@ -70,12 +70,12 @@ def evaluate(idea):
     return {
         "name": idea.get("name", "Unnamed"),
         "score_out_of_100_provisional": round(provisional, 1),
-        "evidence_ready": sufficient and bool(idea.get("distribution_channel")) and bool(idea.get("test")),
+        "evidence_ready": ready,
         "observed_count": observed,
         "estimated_count": estimated,
         "distinct_observed_domains": len(domains),
         "warnings": warnings,
-        "recommendation": "INVESTIGATE" if sufficient else "INSUFFICIENT EVIDENCE",
+        "recommendation": "INVESTIGATE" if ready else "INSUFFICIENT EVIDENCE",
         "next_test": idea.get("test"),
     }
 
