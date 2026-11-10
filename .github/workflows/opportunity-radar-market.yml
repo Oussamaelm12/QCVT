@@ -37,7 +37,7 @@ jobs:
             --country "$COUNTRY" --max-queries "$MAX_QUERIES" \
             --output research/weekly-market-radar.json
       - name: Upload weekly intelligence
-        if: always()
+        if: ${{ always() && github.event.repository.private }}
         uses: actions/upload-artifact@v4
         with:
           name: opportunity-radar-weekly-intelligence
