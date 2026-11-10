@@ -52,3 +52,17 @@ python3 skills/opportunity-radar/scripts/enrich.py research/first-scan.json \
 ```
 
 **Important:** The above external connectors are implemented but not yet live-tested against authenticated provider accounts. External GitHub skill repositories listed in `SKILL.md` remain reviewed references, not installed executables. No claim of being the world's highest-performing agent is justified without independent benchmark comparisons, representative datasets, and repeatable metrics. For safe operation, credentials belong in a secret manager, not in source code or artifacts.
+
+## Production use — release candidate
+
+**Run locally (Python 3.12+; no dependencies):**
+```bash
+python3 skills/opportunity-radar/scripts/production.py \
+  --query "budget planner" --country fr \
+  --output-dir research/output
+```
+Outputs: `research/output/dossier.json` (structured provenance, errors and raw research leads) and `research/output/REPORT.md` (readable summary).
+
+**Run from GitHub:** After the PR is approved and merged into the default branch, open Actions → **Opportunity Radar — run research** → Run workflow, enter a query and choose the country. Download the `opportunity-radar-production-report` artifact. Until merged, the PR workflow runs a fixed demonstration query and uploads a `opportunity-radar-production-smoke` artifact; it does **not** provide arbitrary-query one-click production runs.
+
+**Release criteria:** CI offline tests green; public API smoke produces data with no errors; Markdown and JSON artifact exists; no credentials or spending required. This is a **research MVP**, not an autonomous market-validation or profit-forecasting system. Reddit and Trends remain optional credential-gated integrations, not part of the default production run. Do not merge or deploy without review.
