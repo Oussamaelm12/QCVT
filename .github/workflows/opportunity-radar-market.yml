@@ -1,0 +1,46 @@
+name: Opportunity Radar — weekly market intelligence
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      country:
+        type: choice
+        description: Target App Store market
+        options: [fr, us, de, gb]
+        default: fr
+      max_queries:
+        type: choice
+        description: Maximum distinct research queries
+        options: ['8', '16', '24', '32']
+        default: '24'
+permissions:
+  contents: read
+concurrency:
+  group: opportunity-radar-weekly
+  cancel-in-progress: false
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run cross-sector scan
+        env:
+          COUNTRY: ${{ inputs.country || 'fr' }}
+          MAX_QUERIES: ${{ inputs.max_queries || '24' }}
+        run: |
+          python skills/opportunity-radar/scripts/market_radar.py \
+            --country "$COUNTRY" --max-queries "$MAX_QUERIES" \
+            --output research/weekly-market-radar.json
+      - name: Upload weekly intelligence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-weekly-intelligence
+          path: research/weekly-market-radar.json
+          if-no-files-found: warn
+          retention-days: 30
