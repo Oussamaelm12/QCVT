@@ -1,3 +1,19 @@
+# Opportunity Radar and Venture Studio — overview
+
+**Zero personalization.** This system must NEVER use the user's profile or other projects to identify, research, score, rank or recommend opportunities. Only external market evidence informs opportunity discovery; deeper research starts exclusively after a subject is explicitly selected.
+
+## New: selection-to-business pipeline (draft, offline implementation)
+Opportunity Radar (discovery) → **Evidence Lab** (source-backed research) → **Strategy Lab** (value-oriented differentiation and red-team analysis) → **Customer validation** (real buying intent) → **Venture Operator** (minimum sellable product, controlled launch and measurable outcomes). Research, strategy, operator and orchestration **skill specifications** are provided in `agents/`. They are not autonomous online integrations.
+
+- [Full executable method and tool / skill review](VENTURE-STUDIO.md)
+- [Implementation board and acceptance criteria](VENTURE-STUDIO-EXECUTION-BOARD.md)
+- Offline generator: `scripts/venture_studio.py --input /private/selection.json --output-dir /private/dossier`
+- Local tracking: `scripts/venture_tracker.py status --progress /private/dossier/PROGRESS.json`
+
+The generator writes a research source ledger, differentiation strategy worksheet, ordered execution gates and durable progress file. It does NOT itself fetch web pages, verify source accuracy, generate LLM concepts, build software, contact people or earn money. Use a **private** location for any selected proprietary opportunity. Do not merge or deploy without review.
+
+---
+
 # Opportunity Radar — usable research MVP
 
 A read-only, budget-conscious **research assistant**, not an autonomous profit generator. The system integrates Apple App Store search, Apple recent reviews, Hacker News public discussions, evidence inventory, weighted scoring, and scenario calculations. All scripts use Python's standard library.
