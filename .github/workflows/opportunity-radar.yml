@@ -49,3 +49,28 @@ jobs:
           path: research/live-smoke.json
           if-no-files-found: ignore
           retention-days: 7
+
+  production-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    continue-on-error: true
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate production research report
+        run: |
+          python skills/opportunity-radar/scripts/production.py \
+            --query "budget planner" --country fr --app-limit 10 --hn-limit 10 \
+            --reviews 1 --output-dir research/production-smoke
+      - name: Upload production report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-production-smoke
+          path: research/production-smoke/
+          if-no-files-found: ignore
+          retention-days: 7
