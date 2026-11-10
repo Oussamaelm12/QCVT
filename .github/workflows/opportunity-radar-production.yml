@@ -51,7 +51,7 @@ jobs:
             --app-limit 20 --hn-limit 20 --reviews 2 \
             --output-dir research/output
       - name: Upload results
-        if: always()
+        if: ${{ always() && github.event.repository.private }}
         uses: actions/upload-artifact@v4
         with:
           name: opportunity-radar-production-report
