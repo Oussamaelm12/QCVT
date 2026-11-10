@@ -8,6 +8,20 @@ class RadarTests(unittest.TestCase):
   q=plan(max_queries=16)
   self.assertEqual(len(q),16)
   self.assertEqual(len({x["sector"] for x in q}),16)
+ def test_weekly_rotation(self):
+  first=plan(max_queries=5,rotation=0)
+  next_week=plan(max_queries=5,rotation=1)
+  self.assertNotEqual(first,next_week)
+  self.assertEqual(len(next_week),5)
+ def test_rotation_validation(self):
+  with self.assertRaises(ValueError):plan(rotation=-1)
+ def test_explicit_empty_sectors(self):
+  with self.assertRaises(ValueError):plan([])
+ def test_coverage_counts(self):
+  def fake(q,**kw):return {"app_count":2,"hn_discussions":3,"review_count":4,"errors":[]}
+  r=scan(max_queries=6,run_fn=fake,pause=0,rotation=2)
+  self.assertEqual(r["observed_counts"],{"apps":4,"discussions":6,"reviews":8})
+  self.assertEqual(r["completed_batches"],2)
  def test_all_domains(self):
   self.assertGreaterEqual(len(SECTORS),15)
   self.assertGreaterEqual(len(STRATEGY_LENSES),15)
