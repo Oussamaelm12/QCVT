@@ -1,0 +1,60 @@
+name: Opportunity Radar — run research
+on:
+  workflow_dispatch:
+    inputs:
+      query:
+        description: 'Research topic (2–100 characters)'
+        required: true
+        type: string
+        default: 'budget planner'
+      country:
+        description: 'Two-letter App Store country code'
+        required: true
+        type: choice
+        options:
+          - fr
+          - us
+          - de
+          - gb
+        default: fr
+permissions:
+  contents: read
+concurrency:
+  group: opportunity-radar-research
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate input
+        env:
+          RESEARCH_QUERY: ${{ inputs.query }}
+        run: |
+          python - <<'PY'
+          import os
+          q=os.environ["RESEARCH_QUERY"]
+          if not 2 <= len(q.strip()) <= 100:
+              raise SystemExit("Query must be 2–100 characters")
+          PY
+      - name: Run read-only research
+        env:
+          RESEARCH_QUERY: ${{ inputs.query }}
+          RESEARCH_COUNTRY: ${{ inputs.country }}
+        run: |
+          python skills/opportunity-radar/scripts/production.py \
+            --query "$RESEARCH_QUERY" --country "$RESEARCH_COUNTRY" \
+            --app-limit 20 --hn-limit 20 --reviews 2 \
+            --output-dir research/output
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-production-report
+          path: research/output/
+          if-no-files-found: warn
+          retention-days: 14
