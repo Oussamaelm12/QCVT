@@ -244,8 +244,17 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input",type=Path,required=True)
     parser.add_argument("--output-dir",type=Path,required=True)
+    parser.add_argument("--innovation-input",type=Path,help="Optional evidence-linked innovation worksheet JSON")
     args=parser.parse_args()
     state=run(args.input,args.output_dir)
+    if args.innovation_input:
+        from innovation_engine import evaluate as evaluate_innovation, markdown as render_innovation
+        innovation=evaluate_innovation(json.loads(args.innovation_input.read_text(encoding="utf-8")))
+        if innovation["subject"] != json.loads(args.input.read_text(encoding="utf-8"))["subject"]:
+            raise ValueError("innovation input subject must match selected venture subject")
+        (args.output_dir/"INNOVATION_DOSSIER.md").write_text(render_innovation(innovation),encoding="utf-8")
+        (args.output_dir/"INNOVATION_ASSESSMENT.json").write_text(
+            json.dumps(innovation,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"output_dir":str(args.output_dir),"research_gate":state["research_ready_for_human_review"],
                       "concepts":len(state["concepts"]),"commercially_validated":False}))
 if __name__=="__main__":main()
