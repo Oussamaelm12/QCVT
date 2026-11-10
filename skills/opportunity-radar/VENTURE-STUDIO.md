@@ -37,6 +37,20 @@ python3 skills/opportunity-radar/scripts/venture_studio.py --input /private/work
 python3 -m unittest discover -s skills/opportunity-radar/tests -v
 ```
 
+Track activity without losing prior entries when re-generating the dossier:
+
+```bash
+python3 skills/opportunity-radar/scripts/venture_tracker.py record \\
+  --progress /private/work/venture-dossier/PROGRESS.json \\
+  --stage research --state in_progress \\
+  --note "Reviewed primary-source pricing and recorded conflicting alternatives" \\
+  --evidence-url https://example.org/original-reference
+python3 skills/opportunity-radar/scripts/venture_tracker.py status \\
+  --progress /private/work/venture-dossier/PROGRESS.json
+```
+
+Tracker event entries are **manually reported**, never externally audited. Any `completed` status for validation, building or launch requires a cited HTTPS evidence link but does not prove the result. Re-running the dossier generator preserves same-subject event history; it refuses to replace a different subject's tracking file.
+
 Outputs:
 - `RESEARCH_BRIEF.md`: sources, observed-vs-assumed claims, competitors, gaps
 - `STRATEGY_LAB.md`: innovation lenses, explicit submitted concepts, counterarguments
