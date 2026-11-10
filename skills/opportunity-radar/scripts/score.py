@@ -41,12 +41,19 @@ def evaluate(idea):
                 warnings.append(f"evidence[{i}]: future date")
                 continue
             if age > MAX_AGE_DAYS:
-                warnings.append(f"evidence[{i}]: older than one year")
+                warnings.append(f"evidence[{i}]: older than one year; excluded")
+                continue
         except ValueError:
             warnings.append(f"evidence[{i}]: invalid date")
             continue
         accepted.append(item)
         if typ == "observed":
+            canonical = (url.split("#", 1)[0].rstrip("/"), item["claim"].strip().casefold())
+            if canonical in unique_observed:
+                warnings.append(f"evidence[{i}]: duplicate observation; excluded")
+                accepted.pop()
+                continue
+            unique_observed.add(canonical)
             domains.add(host.lower().removeprefix("www."))
     scores = idea.get("scores", {})
     missing = [k for k in WEIGHTS if k not in scores]
